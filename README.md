@@ -35,3 +35,21 @@ Les bonnes pratiques de développement ci-dessous sont les **indispensables de c
     - Données sur S3
     - Fichiers de configuration (_secrets_, etc.) à part
 
+# Parcours MLOps
+
+> ### Objectif
+> 
+> A partir d’un projet existant ou d’un projet type _contest Kaggle_, développer un modèle de ML répondant à une problématique métier, puis le déployer sur une infrastructure de production conformément aux principes du **MLOps**.
+
+## Etapes :
+
+- [ ] **Respecter la _checklist_ des bonnes pratiques de développement** ;
+- [ ] **Développer un modèle de ML qui répond à un besoin métier** ;
+- [ ] **Entraîner le modèle via validation croisée, avec une procédure de _fine-tuning_ des hyperparamètres** ;
+- [ ] **Formaliser le processus de _fine-tuning_ de manière reproductible via MLFlow** ;
+- [ ] **Construire une API avec Fastapi pour exposer le meilleur modèle** ;
+- [ ] **Créer une image Docker pour mettre à disposition l'API** ;
+- [ ] **Déployer l'API sur le SSP Cloud** ;
+- [ ] **Industrialiser le déploiement en mode GitOps avec ArgoCD** ;
+- [ ] **Gérer le monitoring de l'application : _logs, dashboard_ de suivi des performances, etc.**
+
