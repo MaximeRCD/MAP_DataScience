@@ -45,24 +45,3 @@ def predict(model, params, test_dataset, batch_size):
                 predictions.append((predicted_mask, original_height, original_width))
 
     return predictions
-
-
-path_to_saved_model = "./cross_entropy_weighted10_batch64_32_16.pth"
-
-model = load_model(path_to_saved_model)
-## 4. Test du modèle sur le jeu de test
-test_transform = A.Compose(
-    [A.Resize(256, 256), A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)), ToTensorV2()]
-)
-test_dataset = FreeParkingPlacesInferenceDataset(TEST_IMAGE_DIR, transform=test_transform)
-
-predictions = predict(model, PARAMS, test_dataset, batch_size=16)
-
-predicted_masks = []
-for predicted_256x256_mask, original_height, original_width in predictions:
-    full_sized_mask = A.resize(
-        predicted_256x256_mask, height=original_height, width=original_width, interpolation=cv2.INTER_NEAREST
-    )
-    predicted_masks.append(full_sized_mask)
-
-# visualizer_worker.display_image_grid(TEST_IMAGE_FILENAMES, TEST_IMAGE_DIR, TEST_MASK_DIR, predicted_masks=predicted_masks)

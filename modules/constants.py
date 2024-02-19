@@ -8,8 +8,8 @@ TRAINING_MASK_DIR = "../data/train/masks/"
 VAL_IMAGE_DIR = "../data/val/images/"
 VAL_MASK_DIR = "../data/val/masks/"
 
-TEST_IMAGE_DIR = "../data/test/images/"
-TEST_MASK_DIR = "../data/test/masks/"
+TEST_IMAGE_DIR = "./data/test/images/"
+TEST_MASK_DIR = "./data/test/masks/"
 
 PARAMS = {
     "model": "UNet11",
