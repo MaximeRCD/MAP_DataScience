@@ -1,5 +1,5 @@
 import os
-from MAP_DataScience.utils import DataReader
+from .utils import DataReader
 from torch.utils.data import Dataset
 import numpy as np
 
@@ -29,6 +29,8 @@ class FreeParkingPlacesDataset(Dataset):
         mask = mask.astype(np.float32)
         mask[mask == 255.0] = 1.0
         return mask
+    
+    
 class FreeParkingPlacesInferenceDataset(Dataset):
     def __init__(self, images_directory, transform=None):
         self.images_directory = images_directory
