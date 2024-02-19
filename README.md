@@ -1,3 +1,43 @@
+# Table of Content
+<!-- TOC -->
+- [Table of Content](#table-of-content)
+- [Free Parking Spot Detection using Satellite Images](#free-parking-spot-detection-using-satellite-images)
+    - [Project Overview](#project-overview)
+    - [Dataset Creation](#dataset-creation)
+    - [Model Development](#model-development)
+    - [Further Steps and Testing](#further-steps-and-testing)
+    - [Execution Instructions](#execution-instructions)
+- [Évaluation](#%C3%A9valuation)
+    - [Modalités](#modalit%C3%A9s)
+- [Checklist des bonnes pratiques de développement](#checklist-des-bonnes-pratiques-de-d%C3%A9veloppement)
+- [Parcours MLOps](#parcours-mlops)
+        - [> ### Objectif](#--objectif)
+    - [Etapes :](#etapes-)
+
+<!-- /TOC -->
+# Free Parking Spot Detection using Satellite Images
+
+## Project Overview
+
+This project aims to develop a machine learning model for detecting free parking spots using satellite images. Initiated by Maxime RICHAUDEAU and Yorik NYSSEN, the inspiration came from the difficulties encountered in finding parking spaces upon reaching destinations using GPS navigation apps like Waze.
+
+## Dataset Creation
+
+The dataset comprises 120 satellite images from various European locations, manually annotated to label free parking spaces. The dataset was divided into training, validation, and test sets, with augmentation techniques applied to increase the dataset size and diversity.
+
+## Model Development
+
+A U-Net model was chosen for this segmentation task, initially fine-tuned from a pre-trained state and later trained from scratch with class weights adjustment to improve performance. The final model showed promising results in segmenting roads and paved areas but struggled with accurately identifying free parking spots.
+
+## Further Steps and Testing
+
+Suggestions for improvement include extending training duration, enriching the dataset, and adjusting hyperparameters. Testing instructions and bibliographic references are provided for those interested in executing the project.
+
+## Execution Instructions
+
+For project execution, follow the preparatory steps outlined in the provided Jupyter notebooks for creating masks, resizing images, and applying data augmentation, followed by training and testing the model as detailed in the `Train_Test.ipynb` notebook.
+
+
 # Évaluation
 
 **Modalités d'évaluation du cours**
@@ -52,4 +92,3 @@ Les bonnes pratiques de développement ci-dessous sont les **indispensables de c
 - [ ] **Déployer l'API sur le SSP Cloud** ;
 - [ ] **Industrialiser le déploiement en mode GitOps avec ArgoCD** ;
 - [ ] **Gérer le monitoring de l'application : _logs, dashboard_ de suivi des performances, etc.**
-
