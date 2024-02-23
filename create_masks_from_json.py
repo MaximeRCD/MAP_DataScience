@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw
 
 class DirectoryManager:
     """
-    A helper class to manage directory operations such as ensuring directories exist.
+    A helper class to manage directory operations such as ensuring directories exist. 
     """
     @staticmethod
     def ensure_directory_exists(file_path):
