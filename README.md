@@ -1,12 +1,14 @@
-# Table of Content
+# Table des Matières
 <!-- TOC -->
-- [Table of Content](#table-of-content)
-- [Free Parking Spot Detection using Satellite Images](#free-parking-spot-detection-using-satellite-images)
-    - [Project Overview](#project-overview)
-    - [Dataset Creation](#dataset-creation)
-    - [Model Development](#model-development)
-    - [Further Steps and Testing](#further-steps-and-testing)
-    - [Execution Instructions](#execution-instructions)
+
+- [Table des Matières](#table-des-mati%C3%A8res)
+- [Détection de Places de Parking Libres par Images Satellitaires](#d%C3%A9tection-de-places-de-parking-libres-par-images-satellitaires)
+    - [Aperçu du Projet](#aper%C3%A7u-du-projet)
+    - [Création du Jeu de Données](#cr%C3%A9ation-du-jeu-de-donn%C3%A9es)
+    - [Développement du Modèle](#d%C3%A9veloppement-du-mod%C3%A8le)
+    - [Prochaines Étapes et Tests](#prochaines-%C3%A9tapes-et-tests)
+    - [Instructions d'Exécution](#instructions-dex%C3%A9cution)
+    - [Bibliographie](#bibliographie)
 - [Évaluation](#%C3%A9valuation)
     - [Modalités](#modalit%C3%A9s)
 - [Checklist des bonnes pratiques de développement](#checklist-des-bonnes-pratiques-de-d%C3%A9veloppement)
@@ -15,27 +17,38 @@
     - [Etapes :](#etapes-)
 
 <!-- /TOC -->
-# Free Parking Spot Detection using Satellite Images
 
-## Project Overview
+# Détection de Places de Parking Libres par Images Satellitaires
 
-This project aims to develop a machine learning model for detecting free parking spots using satellite images. Initiated by Maxime RICHAUDEAU and Yorik NYSSEN, the inspiration came from the difficulties encountered in finding parking spaces upon reaching destinations using GPS navigation apps like Waze.
+## Aperçu du Projet
+Ce projet vise à développer un modèle d'apprentissage automatique pour détecter les places de parking libres à partir d'images satellitaires. Initié par Maxime RICHAUDEAU et Yorik NYSSEN, l'inspiration est venue des difficultés rencontrées pour trouver des places de parking en arrivant à destination en utilisant des applications de navigation GPS comme Waze.
 
-## Dataset Creation
+## Création du Jeu de Données
 
-The dataset comprises 120 satellite images from various European locations, manually annotated to label free parking spaces. The dataset was divided into training, validation, and test sets, with augmentation techniques applied to increase the dataset size and diversity.
+Le jeu de données comprend 120 images satellitaires de différents lieux en Europe, annotées manuellement pour marquer les places de parking libres. Le jeu de données a été divisé en ensembles de training, de validation et de test, avec l'application de techniques d'augmentation pour augmenter la taille et la diversité du jeu de données.
 
-## Model Development
+## Développement du Modèle
 
-A U-Net model was chosen for this segmentation task, initially fine-tuned from a pre-trained state and later trained from scratch with class weights adjustment to improve performance. The final model showed promising results in segmenting roads and paved areas but struggled with accurately identifying free parking spots.
+Un modèle U-Net a été choisi pour cette tâche de segmentation, initialement ajusté à partir d'un état pré-entraîné puis entraîné à partir de zéro avec ajustement des poids de classe pour améliorer la performance. Le modèle final a montré des résultats prometteurs dans la segmentation des routes et des zones pavées mais a eu du mal à identifier avec précision les places de parking libres.
 
-## Further Steps and Testing
+## Prochaines Étapes et Tests
 
-Suggestions for improvement include extending training duration, enriching the dataset, and adjusting hyperparameters. Testing instructions and bibliographic references are provided for those interested in executing the project.
+Des suggestions d'amélioration incluent l'extension de la durée d'entrainement, l'enrichissement du jeu de données et l'ajustement des hyperparamètres. Des instructions de test et des références bibliographiques sont fournies pour ceux intéressés à exécuter le projet.
 
-## Execution Instructions
+## Instructions d'Exécution
 
-For project execution, follow the preparatory steps outlined in the provided Jupyter notebooks for creating masks, resizing images, and applying data augmentation, followed by training and testing the model as detailed in the `Train_Test.ipynb` notebook.
+Pour l'exécution du projet, suivez les étapes préparatoires décrites dans les notebooks Jupyter fournis pour la création de masques, le redimensionnement des images et l'application de l'augmentation de données, suivies par la formation et le test du modèle comme détaillé dans le notebook `Train_Test.ipynb`.
+
+## Bibliographie
+
+1. [Smith, J. (2020). "Efficient Image Segmentation using PyTorch - Part 1." Towards Data Science.](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-1-89e8297a0923)
+2. [Smith, J. (2020). "Efficient Image Segmentation using PyTorch - Part 2." Towards Data Science.](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-2-bed68cadd7c7)
+3. [Smith, J. (2020). "Efficient Image Segmentation using PyTorch - Part 3." Towards Data Science.](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-3-3534cf04fb89)
+4. [Smith, J. (2020). "Efficient Image Segmentation using PyTorch - Part 4." Towards Data Science.](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-4-6c86da083432)
+5. [Albumentations.](https://albumentations.ai/)
+6. [Albumentations. (Documentation). "PyTorch Semantic Segmentation."](https://albumentations.ai/docs/examples/pytorch_semantic_segmentation/)
+7. [TernausNet GitHub Repository.](https://github.com/ternaus/TernausNet/tree/master)
+8. [PyTorch Tutorials. "Data Loading and Processing Tutorial."](https://pytorch.org/tutorials/beginner/data_loading_tutorial.html)
 
 
 # Évaluation
@@ -44,12 +57,12 @@ For project execution, follow the preparatory steps outlined in the provided Jup
 
 ## Modalités
 
-L'objectif général de l'évaluation de ce cours est de **mettre en pratique les notions étudiées** (bonnes pratiques de développement et mise en production) de manière appliquée et réaliste, i.e. à travers un projet basé sur une problématique "métier" et des données réelles. Pour cela, l'évaluation sera en deux parties :
+L'objectif général de l'évaluation de ce cours est de **mettre en pratique les notions étudiées** de manière appliquée et réaliste, à travers un projet basé sur une problématique "métier" et des données réelles. Pour cela, l'évaluation sera en deux parties :
 
-1. **Par groupe de 3** : un projet à choisir parmi les 3 parcours (MLOps, app interactive / dashboard, publication reproductible + site web). Idéalement, on choisira un projet réel, effectué par exemple dans le cadre d'un cours précédent et qui génère un output propre à une mise en production.
-2. **Seul** : effectuer une revue de code d'un autre projet. Compétence essentielle et souvent attendue d'un data scientist, la revue de code sera l'occasion de bien intégrer les bonnes pratiques de développement (cf. checklist ci-dessous) et de faire un retour bienveillant sur un autre projet que celui de son groupe.
+1. **En groupe de 3** : un projet à choisir parmi les 3 parcours (MLOps, application interactive / tableau de bord, publication reproductible + site web). Idéalement, on choisira un projet réel, effectué par exemple dans le cadre d'un cours précédent et qui génère un résultat propre à une mise en production.
+2. **Individuellement** : effectuer une revue de code d'un autre projet. Compétence essentielle et souvent attendue d'un data scientist, la revue de code sera l'occasion d'intégrer les bonnes pratiques de développement et de faire un retour constructif sur un projet autre que celui de son groupe.
 
-> **⚠️ Avertissement**
+> **⚠️ Attention**
 >
 > Ce projet doit mobiliser des données publiquement accessibles. La récupération et structuration de ces données peut faire partie des enjeux du projet mais celles-ci ne doivent pas provenir d'un projet antérieur de votre scolarité pour lequel le partage de données n'est pas possible.
 
@@ -57,10 +70,13 @@ L'objectif général de l'évaluation de ce cours est de **mettre en pratique le
 
 Les bonnes pratiques de développement ci-dessous sont les **indispensables de ce cours**. Elles doivent être à la fois appliquées dans les **projets de groupe**, et à la base de la **revue de code individuelle**.
 
-- [ ] **Utilisation de Git**
+- [x] **Utilisation de Git**
   - Présence d’un fichier `.gitignore` adapté au langage et avec des règles additionnelles pour respecter les bonnes pratiques de _versioning_
   - Travail collaboratif : utilisation de branches et des _pull requests_
-- [ ] **Présence d’un fichier `README`** présentant le projet : contexte, objectif, comment l’utiliser ?
+- [ ] **Présence d’un fichier `README`** présentant le projet : 
+  - [x] contexte
+  - [x] objectif
+  - [ ] comment l’utiliser
 - [ ] **Présence d’un fichier `LICENSE`** déclarant la licence (_open-source_) d’exploitation du projet.
 - [ ] **Versioning des packages** : présence d’un fichier `requirements.txt` ou d’un fichier d’environnement `environment.yml` pour conda
 
@@ -77,7 +93,7 @@ Les bonnes pratiques de développement ci-dessous sont les **indispensables de c
 
 # Parcours MLOps
 
-> ### Objectif
+### > ### Objectif
 > 
 > A partir d’un projet existant ou d’un projet type _contest Kaggle_, développer un modèle de ML répondant à une problématique métier, puis le déployer sur une infrastructure de production conformément aux principes du **MLOps**.
 
