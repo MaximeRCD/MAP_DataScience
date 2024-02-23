@@ -3,13 +3,12 @@
     original mask and its corresponding satellite image into smaller squared masks and images.
 """
 
-
 import math
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-from .utils import DataReader, DirectoryManager
+from utils import DataReader, DirectoryManager
 
 class ImageResizer :
     '''
@@ -23,7 +22,6 @@ class ImageResizer :
             resized_masks_dir (string): The directory where the new resized masks will be stored
             image_size (integer): The size of the new squared images and masks
             show (boolean, optional): True to display the smaller images/masks
-        
     '''
     def __init__(self, images_dir : str, masks_dir : str,resized_images_dir : str,
                  resized_masks_dir : str, image_size : int) :
@@ -205,4 +203,17 @@ class ImageResizer :
             plt.axis('off')
 
 if __name__ == '__main__' :
-    pass
+    
+    # Instanciation of the class
+    training_image_resizer = ImageResizer(
+                                images_dir = '../data/images',
+                                masks_dir = '../data/masks',
+                                resized_images_dir = '../data/train/images',
+                                resized_masks_dir = '../data/train/masks',
+                                image_size = 256
+                                        )
+    # Test if the class is working
+    training_image_resizer.save_new_images_masks(number_of_mask= 4,
+                                                 image_name = 'image_max_1.png',
+                                                 show = True)
+   
