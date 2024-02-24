@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw
 
 class DirectoryManager:
     """
-    A helper class to manage directory operations such as ensuring directories exist. 
+    A helper class to manage directory operations such as ensuring directories exist.
     """
     @staticmethod
     def ensure_directory_exists(file_path):
@@ -24,18 +24,18 @@ directory_manager = DirectoryManager()
 
 class ImageMaskGenerator:
     """
-    Cette classe génère des masques d'images basés sur des annotations de polygones
-    fournies dans un fichier JSON.
+    This class generates image masks based on polygon annotations
+    provided in a JSON file.
     """
 
     def __init__(self, json_path, images_folder, masks_folder, YN = False):
         """
-        Initialise le générateur de masques d'images.
+        Initializes the image mask generator.
 
-        :param json_path: Chemin vers le fichier JSON contenant les annotations.
-        :param images_folder: Dossier contenant les images originales.
-        :param masks_folder: Dossier de destination pour sauvegarder les masques générés.
-        :param YN : booléen qui indique qu'on utilise un autre format json venant de Label Studio.
+        :param json_path: Path to the JSON file containing the annotations.
+        :param images_folder: Folder containing the original images.
+        :param masks_folder: Destination folder for saving the generated masks.
+        :param YN: Boolean indicating whether we use another json format coming from Label Studio.
         """
         self.json_path = json_path
         self.images_folder = images_folder
@@ -44,17 +44,17 @@ class ImageMaskGenerator:
 
     def load_json_data(self):
         """
-        Charge les données JSON du fichier spécifié.
+        Loads JSON data from the specified file.
 
-        :return: Les données JSON chargées.
+        :return: The loaded JSON data.
         """
         with open(self.json_path) as file:
             return json.load(file)
 
     def generate_masks(self):
         """
-        Génère des masques pour chaque image basée sur les annotations de polygones
-        dans le fichier JSON.
+        Generates masks for each image based on the polygon annotations
+        in the JSON file.
         """
         data = self.load_json_data()
 
@@ -72,11 +72,11 @@ class ImageMaskGenerator:
 
     def create_mask(self, image, label_info):
         """
-        Crée un masque pour une image unique basée sur les annotations de polygones.
+        Creates a mask for a single image based on the polygon annotations.
 
-        :param image: L'objet Image PIL de l'image.
-        :param label_info: Les informations d'étiquetage pour cette image.
-        :return: L'objet Image PIL du masque.
+        :param image: The PIL Image object of the image.
+        :param label_info: The labeling information for this image.
+        :return: The PIL Image object of the mask.
         """
         width, height = image.size
         mask = Image.new('L', (width, height), 0)
@@ -103,10 +103,10 @@ class ImageMaskGenerator:
 
     def save_mask(self, mask, image_name):
         """
-        Sauvegarde le masque dans le dossier spécifié.
+        Saves the mask in the specified folder.
 
-        :param mask: L'objet Image PIL du masque à sauvegarder.
-        :param image_name: Le nom de l'image source.
+        :param mask: The PIL Image object of the mask to save.
+        :param image_name: The name of the source image.
         """
         mask_file_name = os.path.basename(image_name).replace('.png', '_mask.png')
         mask_path = os.path.join(self.masks_folder, mask_file_name)
@@ -115,20 +115,20 @@ class ImageMaskGenerator:
         mask.save(mask_path)
         print(f"Masque sauvegardé dans : {mask_path}")
 
-yn_generator = ImageMaskGenerator('../json/mask.json',
-                               '../data/images',
-                               '../data/masks',
+yn_generator = ImageMaskGenerator('json/mask.json',
+                               'data/images',
+                               'data/masks',
                                YN = True)
 yn_generator.generate_masks()
 
-mr_generator = ImageMaskGenerator('../json/mask_maxime.ndjson',
-                               '../data/images',
-                               '../data/masks',
+mr_generator = ImageMaskGenerator('json/mask_maxime.ndjson',
+                               'data/images',
+                               'data/masks',
                                YN = False)
 mr_generator.generate_masks()
 
-yn_generator_test_data = ImageMaskGenerator('../json/mask_test.json',
-                               '../data/test/images',
-                               '../data/test/masks',
+yn_generator_test_data = ImageMaskGenerator('json/mask_test.json',
+                               'data/test/images',
+                               'data/test/masks',
                                YN = True)
 yn_generator_test_data.generate_masks()
