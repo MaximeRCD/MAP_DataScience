@@ -1,5 +1,5 @@
 """
-This module is designed for training, validating, and testing a U-Net model for semantic 
+This module is designed for training, validating, and testing a U-Net model for semantic
 segmentation tasks. It sets up the necessary configurations for the model, including directories
 for training, validation, and testing datasets, model parameters, and runtime settings. The module
 supports running on CUDA-enabled devices if available, falling back to CPU otherwise. It defines
@@ -14,7 +14,7 @@ Attributes:
     VAL_MASK_DIR (str): Directory path for validation masks.
     TEST_IMAGE_DIR (str): Directory path for test images.
     TEST_MASK_DIR (str): Directory path for test masks.
-    PARAMS (dict): Configuration parameters for the model including : 
+    PARAMS (dict): Configuration parameters for the model including :
         - model type
         - device
         - learning rate
