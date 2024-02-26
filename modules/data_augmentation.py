@@ -9,7 +9,7 @@ import random
 import os
 from typing import List, Tuple
 import numpy as np
-from cv2 import cv2
+import cv2
 import albumentations as A
 from tqdm import tqdm
 from joblib import Parallel, delayed
@@ -233,7 +233,7 @@ if __name__ == '__main__':
             os.path.join(TRAINING_MASK_DIR, image_name.replace(".png", "_mask.png")),
             "../data",
         )
-        for image_name in tqdm(os.listdir("../data/train/images"))
+        for image_name in tqdm(os.listdir("../data/images"))
     )
 
     _ = Parallel(n_jobs=-1)(
@@ -242,5 +242,5 @@ if __name__ == '__main__':
             os.path.join(VAL_MASK_DIR, image_name.replace(".png", "_mask.png")),
             "../data",
         )
-        for image_name in tqdm(os.listdir("../data/val/images"))
-    )
+        for image_name in tqdm(os.listdir("../data/images"))
+   )
