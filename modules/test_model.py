@@ -15,7 +15,7 @@ from torch.utils.data import DataLoader
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
-from constants import TEST_IMAGE_DIR, TEST_MASK_DIR, PARAMS
+from constants import TEST_IMAGE_DIR, TEST_MASK_DIR, PARAMS, PRETRAINED_MODEL_PATH
 from datasets import FreeParkingPlacesInferenceDataset
 from utils import Visualizer
 
@@ -89,7 +89,7 @@ def main():
     visualizer_worker = Visualizer()
     test_image_filenames = os.listdir(TEST_IMAGE_DIR)
 
-    path_to_saved_model = "./cross_entropy_weighted10_batch64_32_16.pth"
+    path_to_saved_model = PRETRAINED_MODEL_PATH
     model = load_model(path_to_saved_model)
 
     # Setup for testing the model with predefined transformations

@@ -21,6 +21,7 @@ Attributes:
         - class weights
         - batch size
         - number of epochs
+    PRETRAINED_MODEL_PATH (str): File path for pretrained model.
 """
 
 import torch
@@ -44,3 +45,5 @@ PARAMS = {
     "batch_size": 16,
     "epochs": 25,
 }
+
+PRETRAINED_MODEL_PATH = "./cross_entropy_weighted10_batch64_32_16.pth"
