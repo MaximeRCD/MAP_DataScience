@@ -1,7 +1,7 @@
 """
 This module provides utility functions and classes for loading, processing, and visualizing
-data related to detecting free parking spaces. It includes functionality for checking CUDA 
-availability, preprocessing masks for semantic segmentation, reading image and mask data, 
+data related to detecting free parking spaces. It includes functionality for checking CUDA
+availability, preprocessing masks for semantic segmentation, reading image and mask data,
 and visualizing results for comparison and evaluation purposes.
 """
 
@@ -51,7 +51,7 @@ class DataReader:
         Args:
             image_path (str): Path to the image file.
             mask_path (str, optional): Path to the mask file. Defaults to None.
- 
+
         Returns:
             tuple: The original image and mask (if provided) as numpy arrays.
         """
@@ -61,7 +61,7 @@ class DataReader:
             original_mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
             return original_image, original_mask
         return original_image, None
-    
+
     @staticmethod
     def read_mask(mask_path):
         """
@@ -176,6 +176,7 @@ class Visualizer:
         plt.tight_layout()
         plt.show()
 
+
 class DirectoryManager:
     """
     A helper class to manage directory operations such as ensuring directories exist.
@@ -183,7 +184,7 @@ class DirectoryManager:
     @staticmethod
     def ensure_directory_exists(file_path):
         """
-        Ensures that the directory for the given file path exists. 
+        Ensures that the directory for the given file path exists.
         Creates the directory if it does not exist.
         Args:
             file_path (str): The file path for which the directory needs to be checked/created.
@@ -191,4 +192,47 @@ class DirectoryManager:
         directory = os.path.dirname(file_path)
         if not os.path.exists(directory):
             os.makedirs(directory)
-            
+
+
+class ImageSaver:
+    """
+    Helper class for saving images to the disk.
+
+    This class provides a static method to save images in
+    various formats to a specified path on the disk.
+    It ensures that the necessary directories exist
+    before saving the image using OpenCV's imwrite function.
+    """
+
+    @staticmethod
+    def save_image(image: np.ndarray, file_path: str) -> None:
+        """
+        Saves an image to the specified file path.
+
+        Parameters:
+        image (np.ndarray): The image array to be saved. Expected to be in a format
+                            compatible with OpenCV, such as an 8-bit or floating-point 32-bit array.
+        file_path (str): The complete target file path where the image will be saved.
+                         If the directory structure does not exist, it will be created.
+
+        Returns:
+        None: This method does not return any value.
+
+        Raises:
+        ValueError: If 'image' is not a valid NumPy ndarray.
+        OSError: If the file could not be saved to the specified path due to a file system error.
+
+        Examples:
+        >>> img = np.zeros((100, 100), dtype=np.uint8)
+        >>> ImageSaver.save_image(img, '/path/to/save/image.png')
+        """
+        if not isinstance(image, np.ndarray):
+            raise ValueError("Provided image is not a valid numpy array")
+
+        DirectoryManager.ensure_directory_exists(file_path)
+
+        if not cv2.imwrite(file_path, image):
+            raise OSError(
+                f"Image could not be saved to {file_path}."
+                "There might be an issue with the file path or permissions."
+            )
