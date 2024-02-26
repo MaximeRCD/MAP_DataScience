@@ -51,7 +51,7 @@ class DataReader:
         Args:
             image_path (str): Path to the image file.
             mask_path (str, optional): Path to the mask file. Defaults to None.
-
+ 
         Returns:
             tuple: The original image and mask (if provided) as numpy arrays.
         """
@@ -61,6 +61,18 @@ class DataReader:
             original_mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
             return original_image, original_mask
         return original_image, None
+    
+    @staticmethod
+    def read_mask(mask_path):
+        """
+        Reads a mask from the given file paths.
+        Args:
+            mask_path (str): Path to the mask file.
+        Returns:
+            the original mask as numpy arrays.
+        """
+        original_mask = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
+        return original_mask
 
 
 class Visualizer:
@@ -163,3 +175,20 @@ class Visualizer:
                 ax[i, j].axis("off")
         plt.tight_layout()
         plt.show()
+
+class DirectoryManager:
+    """
+    A helper class to manage directory operations such as ensuring directories exist.
+    """
+    @staticmethod
+    def ensure_directory_exists(file_path):
+        """
+        Ensures that the directory for the given file path exists. 
+        Creates the directory if it does not exist.
+        Args:
+            file_path (str): The file path for which the directory needs to be checked/created.
+        """
+        directory = os.path.dirname(file_path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            
