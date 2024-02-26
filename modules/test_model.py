@@ -8,12 +8,12 @@ image loading and preprocessing, and utilizing the Visualizer for displaying the
 
 import os
 import cv2
-import albumentations as A
-import torch.optim
 import ternausnet.models
 import torch
-from albumentations.pytorch import ToTensorV2
+import torch.optim
 from torch.utils.data import DataLoader
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
 
 from constants import TEST_IMAGE_DIR, TEST_MASK_DIR, PARAMS
 from datasets import FreeParkingPlacesInferenceDataset
@@ -70,6 +70,7 @@ def predict(model, params, test_dataset, batch_size):
                 predictions.append((predicted_mask, original_height, original_width))
 
     return predictions
+
 
 def main():
     """
