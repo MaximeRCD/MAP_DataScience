@@ -8,13 +8,68 @@ image loading and preprocessing, and utilizing the Visualizer for displaying the
 
 import os
 import cv2
+import ternausnet.models
+import torch
+import torch.optim
+from torch.utils.data import DataLoader
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
-from modules.inference_model import load_model, predict
-from modules.datasets import FreeParkingPlacesInferenceDataset
-from modules.utils import Visualizer
-from modules.constants import TEST_IMAGE_DIR, TEST_MASK_DIR, PARAMS
+from constants import TEST_IMAGE_DIR, TEST_MASK_DIR, PARAMS, PRETRAINED_MODEL_PATH
+from datasets import FreeParkingPlacesInferenceDataset
+from utils import Visualizer
+
+
+def load_model(model_file_path):
+    """
+    Loads a model from a specified file path.
+
+    Args:
+        model_file_path (str): Path to the model file.
+
+    Returns:
+        torch.nn.Module: The loaded model.
+    """
+    model = getattr(ternausnet.models, "UNet11")(pretrained=False)
+    model.load_state_dict(torch.load(model_file_path, map_location=PARAMS["device"]))
+    model = model.to(PARAMS["device"])
+    return model
+
+
+def predict(model, params, test_dataset, batch_size):
+    """
+    Generates predictions for a given dataset using the specified model.
+
+    Args:
+        model (torch.nn.Module): The model to use for predictions.
+        params (dict): Parameters for model and device settings.
+        test_dataset (Dataset): The dataset to predict on.
+        batch_size (int): The batch size for processing.
+
+    Returns:
+        list: A list of tuples containing predicted masks and their original dimensions.
+    """
+    # Initialize DataLoader for the test dataset
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+    model.eval()  # Set the model to evaluation mode
+    predictions = []
+
+    with torch.no_grad():  # No need to track gradients for predictions
+        for images, (original_heights, original_widths) in test_loader:
+            images = images.to(params["device"], non_blocking=True)
+            output = model(images)
+            probabilities = torch.sigmoid(output.squeeze(1))
+            predicted_masks = (probabilities >= 0.5).float() * 1
+            predicted_masks = predicted_masks.cpu().numpy()
+
+            # Process predictions
+            for predicted_mask, original_height, original_width in zip(
+                predicted_masks, original_heights.numpy(), original_widths.numpy()
+            ):
+                predictions.append((predicted_mask, original_height, original_width))
+
+    return predictions
 
 
 def main():
@@ -34,7 +89,7 @@ def main():
     visualizer_worker = Visualizer()
     test_image_filenames = os.listdir(TEST_IMAGE_DIR)
 
-    path_to_saved_model = "./cross_entropy_weighted10_batch64_32_16.pth"
+    path_to_saved_model = PRETRAINED_MODEL_PATH
     model = load_model(path_to_saved_model)
 
     # Setup for testing the model with predefined transformations

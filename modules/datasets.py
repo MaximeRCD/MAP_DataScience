@@ -12,7 +12,7 @@ learning models for semantic segmentation.
 import os
 from torch.utils.data import Dataset
 import numpy as np
-from .utils import DataReader
+from utils import DataReader
 
 class FreeParkingPlacesDataset(Dataset):
     """
