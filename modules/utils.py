@@ -154,7 +154,7 @@ class Visualizer:
         """
         cols = 3 if predicted_masks else 2
         rows = len(images_filenames)
-        _, ax = plt.subplots(rows, cols, figsize=(10, rows * 3))
+        _, ax = plt.subplots(rows, cols, figsize=(10, rows * 3), squeeze=False)
         for i, filename in enumerate(images_filenames):
             img = cv2.cvtColor(
                 cv2.imread(os.path.join(images_directory, filename)), cv2.COLOR_BGR2RGB
