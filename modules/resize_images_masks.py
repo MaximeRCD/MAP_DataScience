@@ -9,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 from utils import DataReader, DirectoryManager
+from constants import DATA_IMAGE_DIR, DATA_MASK_DIR, TRAINING_IMAGE_DIR, TRAINING_MASK_DIR, VAL_IMAGE_DIR, VAL_MASK_DIR
 
 class ImageResizer :
     '''
@@ -204,16 +205,32 @@ class ImageResizer :
 
 if __name__ == '__main__' :
     
+    np.random.seed(42)
+    validation_image_names = list(np.random.choice(os.listdir(DATA_IMAGE_DIR), size = 18, replace = False))
+    training_image_names = list(set(os.listdir(DATA_IMAGE_DIR))- set(validation_image_names))
+
     # Instanciation of the class
     training_image_resizer = ImageResizer(
-                                images_dir = '../data/images',
-                                masks_dir = '../data/masks',
-                                resized_images_dir = '../data/train/images',
-                                resized_masks_dir = '../data/train/masks',
+                                images_dir = DATA_IMAGE_DIR,
+                                masks_dir = DATA_MASK_DIR,
+                                resized_images_dir = TRAINING_IMAGE_DIR,
+                                resized_masks_dir = TRAINING_MASK_DIR,
                                 image_size = 256
                                         )
-    # Test if the class is working
-    training_image_resizer.save_new_images_masks(number_of_mask= 4,
-                                                 image_name = 'image_max_1.png',
-                                                 show = True)
+    # Creation of the resized masks and images 
+    for image_name in training_image_names:
+        training_image_resizer.save_new_images_masks(number_of_mask= 4, image_name = image_name)
+    
+    # Instanciation of the class 
+    validation_image_resizer = ImageResizer(
+                                    images_dir = DATA_IMAGE_DIR, 
+                                    masks_dir = DATA_MASK_DIR,
+                                    resized_images_dir = VAL_IMAGE_DIR,
+                                    resized_masks_dir = VAL_MASK_DIR,
+                                    image_size = 256
+                            )
+    
+    # Creation of the resized masks and images 
+    for image_name in validation_image_names:
+        validation_image_resizer.save_new_images_masks(number_of_mask= 4, image_name = image_name)
    
