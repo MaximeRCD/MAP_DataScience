@@ -8,6 +8,7 @@ import os
 import  matplotlib.pyplot as plt
 from PIL import Image, ImageDraw
 from utils import DirectoryManager
+from constants import YN_ANNOTATION_MASKS_PATH, MR_ANNOTATION_MASKS_PATH, YN_ANNOTATION_TEST_MASKS_PATH, DATA_IMAGE_DIR, DATA_MASK_DIR, TEST_IMAGE_DIR, TEST_MASK_DIR
 
 
 
@@ -107,20 +108,20 @@ class ImageMaskGenerator:
 
 if __name__ == '__main__' :
 
-    yn_generator = ImageMaskGenerator('../json/mask.json',
-                                '../data/images',
-                                '../data/masks',
+    yn_generator = ImageMaskGenerator(json_path=YN_ANNOTATION_MASKS_PATH,
+                                images_folder=DATA_IMAGE_DIR,
+                                masks_folder=DATA_MASK_DIR,
                                 YN = True)
     yn_generator.generate_masks()
 
-    mr_generator = ImageMaskGenerator('../json/mask_maxime.ndjson',
-                                '../data/images',
-                                '../data/masks',
+    mr_generator = ImageMaskGenerator(json_path=MR_ANNOTATION_MASKS_PATH,
+                                images_folder=DATA_IMAGE_DIR,
+                                masks_folder=DATA_MASK_DIR,
                                 YN = False)
     mr_generator.generate_masks()
 
-    yn_generator_test_data = ImageMaskGenerator('../json/mask_test.json',
-                                '../data/test/images',
-                                '../data/test/masks',
+    yn_generator_test_data = ImageMaskGenerator(json_path=YN_ANNOTATION_TEST_MASKS_PATH,
+                                images_folder=TEST_IMAGE_DIR,
+                                masks_folder=TEST_MASK_DIR,
                                 YN = True)
     yn_generator_test_data.generate_masks()
