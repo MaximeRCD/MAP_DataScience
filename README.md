@@ -50,6 +50,36 @@ Pour l'exécution du projet, suivez les étapes préparatoires décrites dans le
 7. [TernausNet GitHub Repository.](https://github.com/ternaus/TernausNet/tree/master)
 8. [PyTorch Tutorials. "Data Loading and Processing Tutorial."](https://pytorch.org/tutorials/beginner/data_loading_tutorial.html)
 
+# Contribuer 
+
+## Cas Spécifique
+
+Sur les machines d'Onixia j'ai rencontré une erreur avec l'import de la librairie **opencv-python** qui ressemblait à cette erreur : 
+
+```code
+    import cv2
+  File "/opt/mamba/lib/python3.11/site-packages/cv2/__init__.py", line 181, in <module>
+    bootstrap()
+  File "/opt/mamba/lib/python3.11/site-packages/cv2/__init__.py", line 153, in bootstrap
+    native_module = importlib.import_module("cv2")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ImportError: libGL.so.1: cannot open shared object file: No such file or directory
+```
+
+L'erreur que nous rencontrons, ImportError: libGL.so.1: cannot open shared object file: No such file or directory, se produit généralement lorsque les bibliothèques OpenGL requises ne sont pas installées sur notre système. Cette bibliothèque est nécessaire pour que OpenCV puisse rendre des images et des vidéos, car il s'appuie sur l'accélération matérielle graphique fournie par OpenGL. Pour y remédier : 
+
+```bash
+sudo apt-get update
+sudo apt-get install libgl1-mesa-glx
+```
+
+> **⚠️ Attention**
+>
+> Il faudra donc surement ajouter cette commande au Dockerfile afin d'installer la librairie supplémentaire.
+
 
 # Évaluation
 
