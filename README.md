@@ -9,12 +9,15 @@
     - [Prochaines Étapes et Tests](#prochaines-%C3%A9tapes-et-tests)
     - [Instructions d'Exécution](#instructions-dex%C3%A9cution)
     - [Bibliographie](#bibliographie)
+- [Contribuer](#contribuer)
+    - [Cas Spécifique](#cas-sp%C3%A9cifique)
 - [Évaluation](#%C3%A9valuation)
     - [Modalités](#modalit%C3%A9s)
 - [Checklist des bonnes pratiques de développement](#checklist-des-bonnes-pratiques-de-d%C3%A9veloppement)
 - [Parcours MLOps](#parcours-mlops)
         - [> ### Objectif](#--objectif)
     - [Etapes :](#etapes-)
+- [Séparation code Data](#s%C3%A9paration-code-data)
 
 <!-- /TOC -->
 
@@ -138,3 +141,15 @@ Les bonnes pratiques de développement ci-dessous sont les **indispensables de c
 - [ ] **Déployer l'API sur le SSP Cloud** ;
 - [ ] **Industrialiser le déploiement en mode GitOps avec ArgoCD** ;
 - [ ] **Gérer le monitoring de l'application : _logs, dashboard_ de suivi des performances, etc.**
+
+
+# Séparation code Data 
+```bash
+mc mb s3/maximerichaudeau1/data
+mc cp --recursive ./data/ s3/maximerichaudeau1/data
+
+mc mb s3/maximerichaudeau1/json
+mc cp --recursive ./json/ s3/maximerichaudeau1/json
+
+mc cp ./cross_entropy_weighted10_batch64_32_16.pth  s3/maximerichaudeau1/cross_entropy_weighted10_batch64_32_16.pth
+```
