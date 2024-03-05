@@ -8,6 +8,7 @@ import os
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw
 from utils import DirectoryManager
+from s3_fs import S3FileManager
 from constants import (
     YN_ANNOTATION_MASKS_PATH,
     MR_ANNOTATION_MASKS_PATH,
@@ -16,6 +17,10 @@ from constants import (
     DATA_MASK_DIR,
     TEST_IMAGE_DIR,
     TEST_MASK_DIR,
+    S3_DATA_BUCKET_NAME,
+    S3_JSON_BUCKET_NAME,
+    S3_USER_BUCKET,
+    DATA_ROOT_DIR,
 )
 
 
@@ -126,27 +131,38 @@ class ImageMaskGenerator:
 
 
 if __name__ == "__main__":
-
-    yn_generator = ImageMaskGenerator(
-        json_path=YN_ANNOTATION_MASKS_PATH,
-        images_folder=DATA_IMAGE_DIR,
-        masks_folder=DATA_MASK_DIR,
-        yn=True,
+    # Initialize the S3FileManager
+    s3_file_manager = S3FileManager()
+    # Import data folder to preprocess it
+    s3_file_manager.import_bucket_from_ssp_cloud(
+        "/".join([S3_USER_BUCKET, S3_DATA_BUCKET_NAME]), DATA_ROOT_DIR
     )
-    yn_generator.generate_masks()
-
-    mr_generator = ImageMaskGenerator(
-        json_path=MR_ANNOTATION_MASKS_PATH,
-        images_folder=DATA_IMAGE_DIR,
-        masks_folder=DATA_MASK_DIR,
-        yn=False,
+    # Import json folder to preprocess it
+    s3_file_manager.import_bucket_from_ssp_cloud(
+        "/".join([S3_USER_BUCKET, S3_JSON_BUCKET_NAME]),
+        "/".join([".", S3_JSON_BUCKET_NAME]),
     )
-    mr_generator.generate_masks()
 
-    yn_generator_test_data = ImageMaskGenerator(
-        json_path=YN_ANNOTATION_TEST_MASKS_PATH,
-        images_folder=TEST_IMAGE_DIR,
-        masks_folder=TEST_MASK_DIR,
-        yn=True,
-    )
-    yn_generator_test_data.generate_masks()
+    # yn_generator = ImageMaskGenerator(
+    #     json_path=YN_ANNOTATION_MASKS_PATH,
+    #     images_folder=DATA_IMAGE_DIR,
+    #     masks_folder=DATA_MASK_DIR,
+    #     yn=True,
+    # )
+    # yn_generator.generate_masks()
+
+    # mr_generator = ImageMaskGenerator(
+    #     json_path=MR_ANNOTATION_MASKS_PATH,
+    #     images_folder=DATA_IMAGE_DIR,
+    #     masks_folder=DATA_MASK_DIR,
+    #     yn=False,
+    # )
+    # mr_generator.generate_masks()
+
+    # yn_generator_test_data = ImageMaskGenerator(
+    #     json_path=YN_ANNOTATION_TEST_MASKS_PATH,
+    #     images_folder=TEST_IMAGE_DIR,
+    #     masks_folder=TEST_MASK_DIR,
+    #     yn=True,
+    # )
+    # yn_generator_test_data.generate_masks()

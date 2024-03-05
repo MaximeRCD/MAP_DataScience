@@ -106,10 +106,11 @@ class S3FileManager:
             print(
                 f"The file {source_file_name} has been downloaded to {destination_file_path}"
             )
-        except PermissionError:
+        except PermissionError as e :
             print(
                 f"You tried to import {source_file_name} but you do not have the right permission"
-                " to do so!"
+                " to do so!\n"
+                f" Error : {e}"
             )
         except FileNotFoundError:
             print(f"The file {source_file_name} does not exist")
@@ -123,15 +124,15 @@ if __name__ == "__main__":
     manager.import_bucket_from_ssp_cloud(
         "/".join([S3_USER_BUCKET, S3_DATA_BUCKET_NAME]), DATA_ROOT_DIR
     )
-    manager.import_bucket_from_ssp_cloud(
-        "/".join([S3_USER_BUCKET, S3_JSON_BUCKET_NAME]),
-        "/".join([".", S3_JSON_BUCKET_NAME]),
-    )
-    manager.import_file_from_ssp_cloud(
-        "/".join([S3_USER_BUCKET, S3_PRETRAINED_MODEL_NAME]),
-        "/".join([".", PRETRAINED_MODEL_PATH]),
-    )
-    manager.import_file_from_ssp_cloud(
-        "/".join([S3_USER_BUCKET, "failing_test.txt"]),
-        "/".join([".", "failing_test.txt"]),
-    )
+    # manager.import_bucket_from_ssp_cloud(
+    #     "/".join([S3_USER_BUCKET, S3_JSON_BUCKET_NAME]),
+    #     "/".join([".", S3_JSON_BUCKET_NAME]),
+    # )
+    # manager.import_file_from_ssp_cloud(
+    #     "/".join([S3_USER_BUCKET, S3_PRETRAINED_MODEL_NAME]),
+    #     "/".join([".", PRETRAINED_MODEL_PATH]),
+    # )
+    # manager.import_file_from_ssp_cloud(
+    #     "/".join([S3_USER_BUCKET, "failing_test.txt"]),
+    #     "/".join([".", "failing_test.txt"]),
+    # )

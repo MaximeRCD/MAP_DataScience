@@ -41,19 +41,19 @@ import os
 
 VISUALIZER_BATCH_SIZE = 4
 
-DATA_ROOT_DIR = "./data/"
+DATA_ROOT_DIR = "./data"
 
-DATA_IMAGE_DIR = DATA_ROOT_DIR + "images/"
-DATA_MASK_DIR = DATA_ROOT_DIR + "masks/"
+DATA_IMAGE_DIR = DATA_ROOT_DIR + "/images"
+DATA_MASK_DIR = DATA_ROOT_DIR + "/masks"
 
-TRAINING_IMAGE_DIR = DATA_ROOT_DIR + "train/images/"
-TRAINING_MASK_DIR = DATA_ROOT_DIR + "train/masks/"
+TRAINING_IMAGE_DIR = DATA_ROOT_DIR + "/train/images"
+TRAINING_MASK_DIR = DATA_ROOT_DIR + "/train/masks"
 
-VAL_IMAGE_DIR = DATA_ROOT_DIR + "val/images/"
-VAL_MASK_DIR = DATA_ROOT_DIR + "val/masks/"
+VAL_IMAGE_DIR = DATA_ROOT_DIR + "/val/images"
+VAL_MASK_DIR = DATA_ROOT_DIR + "/val/masks"
 
-TEST_IMAGE_DIR = DATA_ROOT_DIR + "test/images/"
-TEST_MASK_DIR = DATA_ROOT_DIR + "test/masks/"
+TEST_IMAGE_DIR = DATA_ROOT_DIR + "/test/images"
+TEST_MASK_DIR = DATA_ROOT_DIR + "/test/masks"
 
 PARAMS = {
     "model": "UNet11",
