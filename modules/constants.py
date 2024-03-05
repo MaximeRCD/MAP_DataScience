@@ -25,6 +25,16 @@ Attributes:
     YN_ANNOTATION_MASKS_PATH (str): Path to the JSON file containing YN annotations for masks.
     MR_ANNOTATION_MASKS_PATH (str): Path to the NDJSON file containing MR annotations for masks.
     YN_ANNOTATION_TEST_MASKS_PATH (str): Path to the JSON file having annotations for test masks.
+    S3_ENDPOINT_URL (str): Endpoint URL for S3 services, automatically configured from the Onixia
+        services' environment variable `AWS_S3_ENDPOINT`.
+    S3_USER_BUCKET (str): Name of the user's bucket in the S3 storage, specifying the root bucket
+        for user's data.
+    S3_DATA_BUCKET_NAME (str): Identifier for the data bucket within the user's S3 storage, used
+        for storing and retrieving general data files.
+    S3_JSON_BUCKET_NAME (str): Identifier for the JSON data bucket within the user's S3 storage,
+        dedicated to storing and managing JSON files.
+    S3_PRETRAINED_MODEL_NAME (str): Name of the pretrained model file within the user's S3 storage,
+        indicating the specific machine learning model to be used or referenced.
 
 Note:
     - The DATA_ROOT_DIR, DATA_IMAGE_DIR, and DATA_MASK_DIR constants define the root directory and 
@@ -37,22 +47,23 @@ Note:
 """
 
 import torch
+import os
 
 VISUALIZER_BATCH_SIZE = 4
 
-DATA_ROOT_DIR = "./data/"
+DATA_ROOT_DIR = "./data"
 
-DATA_IMAGE_DIR = DATA_ROOT_DIR + "images/"
-DATA_MASK_DIR = DATA_ROOT_DIR + "masks/"
+DATA_IMAGE_DIR = DATA_ROOT_DIR + "/images"
+DATA_MASK_DIR = DATA_ROOT_DIR + "/masks"
 
-TRAINING_IMAGE_DIR = DATA_ROOT_DIR + "train/images/"
-TRAINING_MASK_DIR = DATA_ROOT_DIR + "train/masks/"
+TRAINING_IMAGE_DIR = DATA_ROOT_DIR + "/train/images"
+TRAINING_MASK_DIR = DATA_ROOT_DIR + "/train/masks"
 
-VAL_IMAGE_DIR = DATA_ROOT_DIR + "val/images/"
-VAL_MASK_DIR = DATA_ROOT_DIR + "val/masks/"
+VAL_IMAGE_DIR = DATA_ROOT_DIR + "/val/images"
+VAL_MASK_DIR = DATA_ROOT_DIR + "/val/masks"
 
-TEST_IMAGE_DIR = DATA_ROOT_DIR + "test/images/"
-TEST_MASK_DIR = DATA_ROOT_DIR + "test/masks/"
+TEST_IMAGE_DIR = DATA_ROOT_DIR + "/test/images"
+TEST_MASK_DIR = DATA_ROOT_DIR + "/test/masks"
 
 PARAMS = {
     "model": "UNet11",
@@ -63,8 +74,15 @@ PARAMS = {
     "epochs": 25,
 }
 
-PRETRAINED_MODEL_PATH = "./cross_entropy_weighted10_batch64_32_16.pth"
+PRETRAINED_MODEL_PATH = "./pretrained_model.pth"
 
 YN_ANNOTATION_MASKS_PATH = "./json/mask.json"
 MR_ANNOTATION_MASKS_PATH = "./json/mask_maxime.ndjson"
 YN_ANNOTATION_TEST_MASKS_PATH = "./json/mask_test.json"
+
+# Available automatically only from Onixia services
+S3_ENDPOINT_URL = "https://" + os.environ["AWS_S3_ENDPOINT"]
+S3_USER_BUCKET = "maximerichaudeau1"
+S3_DATA_BUCKET_NAME = "data"
+S3_JSON_BUCKET_NAME = "json"
+S3_PRETRAINED_MODEL_NAME = "cross_entropy_weighted10_batch64_32_16.pth"
