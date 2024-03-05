@@ -10,6 +10,7 @@ import torch
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from constants import MODEL_INFERENCE_OUTPUT_DIR
 
 
 def check_cuda_availability():
@@ -141,17 +142,31 @@ class Visualizer:
 
     @staticmethod
     def display_image_grid(
-        images_filenames, images_directory, masks_directory, predicted_masks=None
+        images_filenames, images_directory, masks_directory, predicted_masks=None, save=False,
     ):
         """
-        Displays a grid of images, their ground truth masks, and optionally predicted masks.
+            Displays a grid of images along with their ground truth masks, and, optionally,
+            predicted masks.
+            This function creates a visual grid to compare original images from a specified
+            directory, their corresponding ground truth masks, and (if provided) predicted
+            masks. It supports
+            saving the grid to a file instead of displaying it interactively.
 
-        Args:
-            images_filenames (list): Filenames of images to display.
-            images_directory (str): Directory containing the images.
-            masks_directory (str): Directory containing the ground truth masks.
-            predicted_masks (list, optional): List of predicted masks.
-        """
+            Parameters:
+                images_filenames (List[str]): A list of filenames for the images to be displayed.
+                images_directory (str): The directory path where the images are stored.
+                masks_directory (str): The directory path where the ground truth masks are stored.
+                predicted_masks (List[np.ndarray], optional): A list of predicted mask arrays
+                    corresponding to the images. Defaults to None, in which case only images and
+                    their ground truth masks are shown.
+                save (bool, optional): If True, the generated grid is saved to a file. Otherwise,
+                it is displayed using `plt.show()`. Defaults to False.
+
+            Note:
+                The function assumes the ground truth mask for an image named 'xyz.png' will be
+                named 'xyz_mask.png' in the masks_directory. Predicted masks, if provided, should
+                be in the same order as the image filenames.
+            """
         cols = 3 if predicted_masks else 2
         rows = len(images_filenames)
         _, ax = plt.subplots(rows, cols, figsize=(10, rows * 3), squeeze=False)
@@ -174,7 +189,12 @@ class Visualizer:
             for j in range(cols):
                 ax[i, j].axis("off")
         plt.tight_layout()
-        plt.show()
+        if save:
+            saving_path = "/".join([MODEL_INFERENCE_OUTPUT_DIR, "output_model.png"])
+            DirectoryManager.ensure_directory_exists(saving_path)
+            plt.savefig(saving_path)
+        else:
+            plt.show()
 
 
 class DirectoryManager:

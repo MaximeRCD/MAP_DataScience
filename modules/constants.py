@@ -35,6 +35,7 @@ Attributes:
         dedicated to storing and managing JSON files.
     S3_PRETRAINED_MODEL_NAME (str): Name of the pretrained model file within the user's S3 storage,
         indicating the specific machine learning model to be used or referenced.
+    MODEL_INFERENCE_OUTPUT_DIR (str): Name of the folder in which all model inferences are stored
 
 Note:
     - The DATA_ROOT_DIR, DATA_IMAGE_DIR, and DATA_MASK_DIR constants define the root directory and 
@@ -86,3 +87,5 @@ S3_USER_BUCKET = "maximerichaudeau1"
 S3_DATA_BUCKET_NAME = "data"
 S3_JSON_BUCKET_NAME = "json"
 S3_PRETRAINED_MODEL_NAME = "cross_entropy_weighted10_batch64_32_16.pth"
+
+MODEL_INFERENCE_OUTPUT_DIR = "./model_output"

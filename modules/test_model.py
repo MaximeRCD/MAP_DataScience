@@ -15,7 +15,14 @@ from torch.utils.data import DataLoader
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
-from constants import TEST_IMAGE_DIR, TEST_MASK_DIR, PARAMS, PRETRAINED_MODEL_PATH, S3_USER_BUCKET, S3_PRETRAINED_MODEL_NAME
+from constants import (
+    TEST_IMAGE_DIR,
+    TEST_MASK_DIR,
+    PARAMS,
+    PRETRAINED_MODEL_PATH,
+    S3_USER_BUCKET,
+    S3_PRETRAINED_MODEL_NAME
+)
 from datasets import FreeParkingPlacesInferenceDataset
 from utils import Visualizer
 from s3_fs import S3FileManager
@@ -127,6 +134,7 @@ def main():
         TEST_IMAGE_DIR,
         TEST_MASK_DIR,
         predicted_masks=predicted_masks,
+        save=True
     )
 
 
