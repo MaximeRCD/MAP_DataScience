@@ -143,26 +143,26 @@ if __name__ == "__main__":
         "/".join([".", S3_JSON_BUCKET_NAME]),
     )
 
-    # yn_generator = ImageMaskGenerator(
-    #     json_path=YN_ANNOTATION_MASKS_PATH,
-    #     images_folder=DATA_IMAGE_DIR,
-    #     masks_folder=DATA_MASK_DIR,
-    #     yn=True,
-    # )
-    # yn_generator.generate_masks()
+    yn_generator = ImageMaskGenerator(
+        json_path=YN_ANNOTATION_MASKS_PATH,
+        images_folder=DATA_IMAGE_DIR,
+        masks_folder=DATA_MASK_DIR,
+        yn=True,
+    )
+    yn_generator.generate_masks()
 
-    # mr_generator = ImageMaskGenerator(
-    #     json_path=MR_ANNOTATION_MASKS_PATH,
-    #     images_folder=DATA_IMAGE_DIR,
-    #     masks_folder=DATA_MASK_DIR,
-    #     yn=False,
-    # )
-    # mr_generator.generate_masks()
+    mr_generator = ImageMaskGenerator(
+        json_path=MR_ANNOTATION_MASKS_PATH,
+        images_folder=DATA_IMAGE_DIR,
+        masks_folder=DATA_MASK_DIR,
+        yn=False,
+    )
+    mr_generator.generate_masks()
 
-    # yn_generator_test_data = ImageMaskGenerator(
-    #     json_path=YN_ANNOTATION_TEST_MASKS_PATH,
-    #     images_folder=TEST_IMAGE_DIR,
-    #     masks_folder=TEST_MASK_DIR,
-    #     yn=True,
-    # )
-    # yn_generator_test_data.generate_masks()
+    yn_generator_test_data = ImageMaskGenerator(
+        json_path=YN_ANNOTATION_TEST_MASKS_PATH,
+        images_folder=TEST_IMAGE_DIR,
+        masks_folder=TEST_MASK_DIR,
+        yn=True,
+    )
+    yn_generator_test_data.generate_masks()
