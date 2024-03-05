@@ -9,8 +9,16 @@ Usage:
     system.
 """
 
-import os
 import s3fs
+from constants import (
+    S3_DATA_BUCKET_NAME,
+    S3_ENDPOINT_URL,
+    S3_JSON_BUCKET_NAME,
+    S3_PRETRAINED_MODEL_NAME,
+    S3_USER_BUCKET,
+    PRETRAINED_MODEL_PATH,
+    DATA_ROOT_DIR,
+)
 
 
 def import_bucket_from_ssp_cloud(
@@ -23,7 +31,7 @@ def import_bucket_from_ssp_cloud(
         fs_obj (s3fs.S3FileSystem): S3FileSystem object for accessing cloud storage.
         source_bucket_name (str): Name of the source bucket in the cloud storage.
         destination_folder (str): Path of the destination folder in the local system.
-        recursive (bool, optional): Flag to indicate whether to import recursively or not. 
+        recursive (bool, optional): Flag to indicate whether to import recursively or not.
                                     Defaults to True.
 
     Raises:
@@ -76,15 +84,24 @@ def import_file_from_ssp_cloud(fs_obj, source_file_name, destination_file_path):
 
 if __name__ == "__main__":
     # Create filesystem object
-    S3_ENDPOINT_URL = "https://" + os.environ["AWS_S3_ENDPOINT"]
     fs = s3fs.S3FileSystem(client_kwargs={"endpoint_url": S3_ENDPOINT_URL})
 
     # Example usage:
-    import_bucket_from_ssp_cloud(fs, "maximerichaudeau1/data", "./data")
-    import_bucket_from_ssp_cloud(fs, "maximerichaudeau1/json", "./json")
+    import_bucket_from_ssp_cloud(
+        fs, "/".join([S3_USER_BUCKET, S3_DATA_BUCKET_NAME]), DATA_ROOT_DIR
+    )
+    import_bucket_from_ssp_cloud(
+        fs,
+        "/".join([S3_USER_BUCKET, S3_JSON_BUCKET_NAME]),
+        "/".join([".", S3_JSON_BUCKET_NAME]),
+    )
     import_file_from_ssp_cloud(
         fs,
-        "maximerichaudeau1/cross_entropy_weighted10_batch64_32_16.pth",
-        "./cross_entropy_weighted10_batch64_32_16.pth",
+        "/".join([S3_USER_BUCKET, S3_PRETRAINED_MODEL_NAME]),
+        "/".join([".", PRETRAINED_MODEL_PATH]),
     )
-    import_file_from_ssp_cloud(fs, "maximerichaudeau1/test.txt", "./test.txt")
+    import_file_from_ssp_cloud(
+        fs,
+        "/".join([S3_USER_BUCKET, "failing_test.txt"]),
+        "/".join([".", "failing_test.txt"]),
+    )
