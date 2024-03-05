@@ -37,6 +37,7 @@ Note:
 """
 
 import torch
+import os
 
 VISUALIZER_BATCH_SIZE = 4
 
@@ -68,3 +69,10 @@ PRETRAINED_MODEL_PATH = "./cross_entropy_weighted10_batch64_32_16.pth"
 YN_ANNOTATION_MASKS_PATH = "./json/mask.json"
 MR_ANNOTATION_MASKS_PATH = "./json/mask_maxime.ndjson"
 YN_ANNOTATION_TEST_MASKS_PATH = "./json/mask_test.json"
+
+# Available automatically only from Onixia services
+S3_ENDPOINT_URL = "https://" + os.environ["AWS_S3_ENDPOINT"]
+S3_USER_BUCKET = "maximerichaudeau1"
+S3_DATA_BUCKET_NAME = "data"
+S3_JSON_BUCKET_NAME = "json"
+S3_PRETRAINED_MODEL_NAME = "cross_entropy_weighted10_batch64_32_16.pth"
