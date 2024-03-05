@@ -168,3 +168,6 @@ json/
 
 # Model
 *.pth
+
+# Model OutPut
+model_output/
