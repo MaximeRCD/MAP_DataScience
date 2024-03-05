@@ -64,7 +64,7 @@ PARAMS = {
     "epochs": 25,
 }
 
-PRETRAINED_MODEL_PATH = "./cross_entropy_weighted10_batch64_32_16.pth"
+PRETRAINED_MODEL_PATH = "./pretrained_model.pth"
 
 YN_ANNOTATION_MASKS_PATH = "./json/mask.json"
 MR_ANNOTATION_MASKS_PATH = "./json/mask_maxime.ndjson"
