@@ -1,57 +1,46 @@
-import requests
+import os
+import glob
 import cv2
-import io
+import matplotlib.pyplot as plt
+import requests
 import albumentations as A
-from PIL import Image 
-from fastapi import FastAPI, Response
+from albumentations.pytorch import ToTensorV2
+from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 from constants import PARAMS, PRETRAINED_MODEL_PATH
 from datasets import FreeParkingPlacesInferenceDataset
 from utils import Visualizer
-from albumentations.pytorch import ToTensorV2
+from fastapi.staticfiles import StaticFiles
 from test_model import load_model, predict
 
-app = FastAPI(
-    title = "Application de détection de places de parking vides",
-    description = "Un modèle d'apprentissage automatique pour détecter les places de parking libres à partir d'images satellitaires."
-)
 
-@app.get("/", response_class=HTMLResponse)
-def serve():
-    return """
-    <html>
-        <head>
-            <title></title>
-        </head>
-        <body>
-        <img src="/image">
-        <h1>Satellite image</h1>
-        </body>
-    </html>
+
+def clean_folder(folder_path):
     """
+    Deletes all files in the specified folder (here used for the data/API folder).
 
-def get_image_from_url(url):
+    Args:
+    - folder_path (str): The path to the folder from which all files will be deleted.
     """
-    Store an image from a given URL to a specified filename.
+    # List all files in the folder
+    files = glob.glob(os.path.join(folder_path, '*'))
+    
+    # Remove each file.
+    for file_path in files:
+        try:
+            os.remove(file_path)
+        except Exception as e:
+            print(f"Error occurred while deleting file {file_path}: {e}")
 
-    Parameters:
-    - url: str. The URL of the image.
-    - filename: str. The filename to save the image to.
-
-    Returns:
-    - bool: True if the image was saved successfully, False otherwise.
+def prediction(filename):
     """
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        return response.content
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
+    Deletes all files in the specified folder (here used for the data/API folder).
 
-def prediction(image):
-
-    visualizer_worker = Visualizer()
+    Args:
+    - filename (str): The path to the folder which contains the image to predict the places from.
+    """
 
     path_to_saved_model = PRETRAINED_MODEL_PATH
     model = load_model(path_to_saved_model)
@@ -64,8 +53,11 @@ def prediction(image):
             ToTensorV2(),
         ]
     )
+    test_dataset = FreeParkingPlacesInferenceDataset(
+        filename, transform=test_transform
+    )
 
-    predictions = predict(model, PARAMS, image, batch_size=16)
+    predictions = predict(model, PARAMS, test_dataset, batch_size=16)
 
     predicted_masks = []
     for predicted_256x256_mask, original_height, original_width in predictions:
@@ -75,24 +67,92 @@ def prediction(image):
             interpolation=cv2.INTER_NEAREST,
         )
         predicted_masks.append(full_sized_mask)
-
-"""
-    visualizer_worker.display_image_grid(
-        test_image_filenames,
-        TEST_IMAGE_DIR,
-        TEST_MASK_DIR,
-        predicted_masks=predicted_masks,
-    )
-"""
-image = get_image_from_url("https://thumbs.dreamstime.com/b/car-parking-14966337.jpg")
-jpeg_img = Image.open(io.BytesIO(image))
-print(type(jpeg_img))
+    
+    return predicted_masks
 
 
-@app.get("/image")
-async def show_image():
-    img = get_image_from_url("https://thumbs.dreamstime.com/b/car-parking-14966337.jpg")
-    return Response(content=img, media_type="image/jpeg")
+def plot_prediction(pred, save_path):
+    """
+    Plot the prediction array and save it as an image.
+
+    Args:
+    - pred: The prediction array to plot.
+    - save_path: Path where the plot image will be saved.
+    """
+    plt.figure(figsize=(10, 10))
+    plt.imshow(pred[0])
+    plt.axis('off')
+    plt.savefig(save_path, bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+# Creation of the FastAPI application
+app = FastAPI()
+
+@app.get("/", response_class=HTMLResponse)
+def serve():
+    return """
+    <html>
+        <head>
+            <title>Image Display</title>
+        </head>
+        <body>
+            <h1>Enter the URL of the image</h1>
+            <form action="/fetch-and-display-image" method="post">
+                <input type="text" name="image_url" placeholder="Enter Image URL here">
+                <button type="submit">Show Prediction</button>
+            </form>
+        </body>
+    </html>
+    """
 
 
+@app.post("/fetch-and-display-image")
+async def fetch_and_display_image(image_url: str = Form(...)):
+    """
+    Fetch an image from the provided URL, save it as a PNG image in a specific folder,
+    calls the model to predict and save the prediction in order to display it.
+    """
+    #folder where you want to save the image
+    save_folder = Path("../data/API")
+    app.mount("/static", StaticFiles(directory="../data/API"), name="static")
+    save_folder.mkdir(parents=True, exist_ok=True)  # Create the folder if it doesn't exist
+    clean_folder(save_folder)
 
+    # Extract the image name from the URL
+    image_name = Path(image_url).name
+    save_path = save_folder / f"{image_name}.png"
+
+    try:
+        # Fetch the image using requests
+        response = requests.get(image_url)
+        response.raise_for_status()
+
+        with open(save_path, 'wb') as file:
+            file.write(response.content)
+
+        # Make the prediction
+        pred = prediction(save_folder)
+
+        plot_path = save_folder / "prediction_plot.png"
+        plot_prediction(pred, plot_path)
+
+        html_content = f"""
+        <html>
+            <head>
+                <title>Image and Prediction Display</title>
+            </head>
+            <body>
+                <h1>Original Image and Prediction</h1>
+                <div style="display: flex; justify-content: space-around;">
+                    <div><img src="/static/{image_name}.png" alt="Original Image"></div>
+                    <div><img src="/static/prediction_plot.png" alt="Prediction"></div>
+                </div>
+            </body>
+        </html>
+        """
+
+
+        return HTMLResponse(html_content)
+    except Exception as e:
+        return {"error": f"An error occurred: {e}"}
+    
