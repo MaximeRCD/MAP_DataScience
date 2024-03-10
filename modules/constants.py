@@ -40,7 +40,7 @@ import torch
 
 VISUALIZER_BATCH_SIZE = 4
 
-DATA_ROOT_DIR = "./data/"
+DATA_ROOT_DIR = "../data/"
 
 DATA_IMAGE_DIR = DATA_ROOT_DIR + "images/"
 DATA_MASK_DIR = DATA_ROOT_DIR + "masks/"
@@ -63,8 +63,8 @@ PARAMS = {
     "epochs": 25,
 }
 
-PRETRAINED_MODEL_PATH = "./cross_entropy_weighted10_batch64_32_16.pth"
+PRETRAINED_MODEL_PATH = "../cross_entropy_weighted10_batch64_32_16.pth"
 
-YN_ANNOTATION_MASKS_PATH = "./json/mask.json"
-MR_ANNOTATION_MASKS_PATH = "./json/mask_maxime.ndjson"
-YN_ANNOTATION_TEST_MASKS_PATH = "./json/mask_test.json"
+YN_ANNOTATION_MASKS_PATH = "../json/mask.json"
+MR_ANNOTATION_MASKS_PATH = "../json/mask_maxime.ndjson"
+YN_ANNOTATION_TEST_MASKS_PATH = "../json/mask_test.json"
