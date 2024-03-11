@@ -39,6 +39,14 @@ Des suggestions d'amélioration incluent l'extension de la durée d'entrainement
 
 Pour l'exécution du projet, suivez les étapes préparatoires décrites dans les notebooks Jupyter fournis pour la création de masques, le redimensionnement des images et l'application de l'augmentation de données, suivies par la formation et le test du modèle comme détaillé dans le notebook `Train_Test.ipynb`.
 
+## Instructions d'utilisation de l'API
+
+Il est possible d'utiliser le modèle afin de réaliser des prédictions des places de parking. Pour cela, une API est mise à disposition dans le script `Main.py`. Pour utiliser l'API en local, il suffit dans le terminal de se placer dans le dossier contenant celle-ci et d'entrer la commande suivante : 
+```{r, engine='bash', count_lines}
+ uvicorn main:app --reload
+```
+Une fois l'API lancée il suffit d'entrer l'adresse qui s'affiche dans le terminal dans un navigateur web et la page d'accueil s'affichera. Afin de réaliser une prédiction, il suffit de coller une url dans la zone de texte et de cliquer sur le bouton 'Show Prediction'
+
 ## Bibliographie
 
 1. [Smith, J. (2020). "Efficient Image Segmentation using PyTorch - Part 1." Towards Data Science.](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-1-89e8297a0923)
