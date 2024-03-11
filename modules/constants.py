@@ -14,6 +14,7 @@ Attributes:
     VAL_MASK_DIR (str): Path to the directory containing validation masks.
     TEST_IMAGE_DIR (str): Path to the directory containing test images.
     TEST_MASK_DIR (str): Path to the directory containing test masks.
+    API_IMAGES_DIR (str): Path to the folder that contains the image to predict from and the prediction for the API.
     PARAMS (dict): Holds the model configuration parameters, including:
         - model (str): Specifies the model type.
         - device (str): Sets the device for computation ('cuda' or 'cpu').
@@ -40,7 +41,7 @@ import torch
 
 VISUALIZER_BATCH_SIZE = 4
 
-DATA_ROOT_DIR = "../data/"
+DATA_ROOT_DIR = "./data/"
 
 DATA_IMAGE_DIR = DATA_ROOT_DIR + "images/"
 DATA_MASK_DIR = DATA_ROOT_DIR + "masks/"
@@ -54,6 +55,8 @@ VAL_MASK_DIR = DATA_ROOT_DIR + "val/masks/"
 TEST_IMAGE_DIR = DATA_ROOT_DIR + "test/images/"
 TEST_MASK_DIR = DATA_ROOT_DIR + "test/masks/"
 
+API_IMAGES_DIR = DATA_ROOT_DIR + "API/"
+
 PARAMS = {
     "model": "UNet11",
     "device": "cuda" if torch.cuda.is_available() else "cpu",
@@ -63,8 +66,8 @@ PARAMS = {
     "epochs": 25,
 }
 
-PRETRAINED_MODEL_PATH = "../cross_entropy_weighted10_batch64_32_16.pth"
+PRETRAINED_MODEL_PATH = "./cross_entropy_weighted10_batch64_32_16.pth"
 
-YN_ANNOTATION_MASKS_PATH = "../json/mask.json"
-MR_ANNOTATION_MASKS_PATH = "../json/mask_maxime.ndjson"
-YN_ANNOTATION_TEST_MASKS_PATH = "../json/mask_test.json"
+YN_ANNOTATION_MASKS_PATH = "./json/mask.json"
+MR_ANNOTATION_MASKS_PATH = "./json/mask_maxime.ndjson"
+YN_ANNOTATION_TEST_MASKS_PATH = "./json/mask_test.json"
