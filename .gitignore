@@ -163,6 +163,7 @@ data/masks/*
 data/test/masks/*
 data/train/*
 data/val/*
+data/API/*
 
 # Personal 
 .DS_Store

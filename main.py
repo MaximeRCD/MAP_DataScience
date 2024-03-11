@@ -153,8 +153,7 @@ async def fetch_and_display_image(image_url: str = Form(...)):
 
     # Extract the image name from the URL
     image_name = Path(image_url).name
-    save_path = save_folder / f"{image_name}.png"
-
+    save_path = save_folder / f"image.png"
     try:
         # Fetch the image using requests
         response = requests.get(image_url)
@@ -169,7 +168,7 @@ async def fetch_and_display_image(image_url: str = Form(...)):
         saved_image = cv2.cvtColor(saved_image, cv2.COLOR_BGR2RGB)
         save_name = "prediction_plot.png"
         plot_path = save_folder / save_name
-    
+        print(plot_path)
         Visualizer.visualize(
             image=saved_image, 
             mask=pred[0], 
