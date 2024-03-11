@@ -104,7 +104,7 @@ app = FastAPI()
 @app.get("/", response_class=HTMLResponse)
 def serve():
     """
-    Serves the main page of the application, presenting a form where users can input the URL of an image to
+    Serves the main page of the application, presenting a form where users can input their username and the URL of an image to
     be processed for free parking space detection.
 
     This endpoint responds to GET requests with a simple HTML form designed for URL submission.
@@ -119,8 +119,9 @@ def serve():
             <title>Image Display</title>
         </head>
         <body>
-            <h1>Parking places destection model</h1>
+            <h1>Parking places detection model</h1>
             <form action="/fetch-and-display-image" method="post">
+                <input type="text" name="username" placeholder="Enter your username">
                 <input type="text" name="image_url" placeholder="Enter Image URL here">
                 <button type="submit">Show Prediction</button>
             </form>
@@ -130,7 +131,7 @@ def serve():
 
 
 @app.post("/fetch-and-display-image")
-async def fetch_and_display_image(image_url: str = Form(...)):
+async def fetch_and_display_image(image_url: str = Form(...), username: str = Form(...)):
     """
     This endpoint fetches the image from the provided URL, save it as a PNG image in a specific folder,
     calls the model to predict and save the prediction in order to display the results.The final
@@ -152,8 +153,8 @@ async def fetch_and_display_image(image_url: str = Form(...)):
     clean_folder(save_folder)
 
     # Extract the image name from the URL
-    image_name = Path(image_url).name
-    save_path = save_folder / f"image.png"
+    image_name = Path(username).name
+    save_path = save_folder / image_name
     try:
         # Fetch the image using requests
         response = requests.get(image_url)
@@ -166,7 +167,7 @@ async def fetch_and_display_image(image_url: str = Form(...)):
         pred = prediction(save_folder)
         saved_image = cv2.imread(str(save_path))
         saved_image = cv2.cvtColor(saved_image, cv2.COLOR_BGR2RGB)
-        save_name = "prediction_plot.png"
+        save_name = f"{image_name}_prediction_plot.png"
         plot_path = save_folder / save_name
         print(plot_path)
         Visualizer.visualize(
@@ -190,6 +191,10 @@ async def fetch_and_display_image(image_url: str = Form(...)):
                 <h1>Original Image and Prediction</h1>
                 <div style="display: flex; justify-content: space-around;">
                     <div><img src="/static/{save_name}" alt="Prediction Visualization"></div>
+                </div>
+                <!-- Button to go back to the main page -->
+                <div style="margin-top: 20px; text-align: center;">
+                    <button onclick="window.location.href='/';">Back to Main Page</button>
                 </div>
             </body>
         </html>
