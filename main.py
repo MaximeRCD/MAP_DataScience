@@ -163,12 +163,14 @@ async def fetch_and_display_image(image_url: str = Form(...), username: str = Fo
     print(save_folder)
     #DirectoryManager.ensure_directory_exists(save_folder)
     save_folder.mkdir(parents=True, exist_ok=True)  # Create the folder if it doesn't exist
-    app.mount("/static", StaticFiles(directory=API_IMAGES_DIR), name="static")
+    app.mount("/static", StaticFiles(directory=save_folder), name="static")
+    save_folder = Path(API_IMAGES_DIR) / f"{username}"
+    save_folder.mkdir(parents=True, exist_ok=True)  # Create the folder if it doesn't exist
     clean_folder(save_folder)
 
     # Extract the image name from the URL
     # image_name = Path(username).name
-    save_path = save_folder / f"{username}_image.png"
+    save_path = save_folder / "image.png"
     try:
         # Fetch the image using requests
         response = requests.get(image_url)
@@ -204,7 +206,7 @@ async def fetch_and_display_image(image_url: str = Form(...), username: str = Fo
             <body>
                 <h1>Original Image and Prediction</h1>
                 <div style="display: flex; justify-content: space-around;">
-                    <div><img src="/proxy/8000/static/{save_name}" alt="Prediction Visualization"></div>
+                    <div><img src="/proxy/8000/static/{username}/{save_name}" alt="Prediction Visualization"></div>
                 </div>
                 <!-- Button to go back to the main page -->
                 <div style="margin-top: 20px; text-align: center;">
