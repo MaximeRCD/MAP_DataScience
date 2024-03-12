@@ -66,7 +66,7 @@ VAL_MASK_DIR = DATA_ROOT_DIR + "/val/masks"
 TEST_IMAGE_DIR = DATA_ROOT_DIR + "/test/images"
 TEST_MASK_DIR = DATA_ROOT_DIR + "/test/masks"
 
-API_IMAGES_DIR = DATA_ROOT_DIR + "API/"
+API_IMAGES_DIR = DATA_ROOT_DIR + "/API"
 
 PARAMS = {
     "model": "UNet11",
@@ -77,7 +77,7 @@ PARAMS = {
     "epochs": 25,
 }
 
-PRETRAINED_MODEL_PATH = "./pretrained_model.pth"
+PRETRAINED_MODEL_PATH = "pretrained_model.pth"
 
 YN_ANNOTATION_MASKS_PATH = "./json/mask.json"
 MR_ANNOTATION_MASKS_PATH = "./json/mask_maxime.ndjson"

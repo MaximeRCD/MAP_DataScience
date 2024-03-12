@@ -19,21 +19,19 @@ import matplotlib
 import matplotlib.pyplot as plt
 import requests
 import albumentations as A
-import matplotlib.pyplot as plt
 from albumentations.pytorch import ToTensorV2
 from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
-from fastapi.staticfiles import StaticFiles
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'modules'))
 
-from constants import PARAMS, PRETRAINED_MODEL_PATH, API_IMAGES_DIR
+from constants import PARAMS, PRETRAINED_MODEL_PATH, API_IMAGES_DIR, S3_USER_BUCKET, S3_PRETRAINED_MODEL_NAME
 from datasets import FreeParkingPlacesInferenceDataset
 from test_model import load_model, predict
 from utils import Visualizer, DirectoryManager
-
+from s3_fs import S3FileManager
 matplotlib.use('Agg')
 
 
@@ -98,8 +96,24 @@ def prediction(filename):
     
     return predicted_masks
 
+
 # Creation of the FastAPI application
 app = FastAPI()
+
+
+async def initialize_s3_file_manager():
+    # Initialize the S3FileManager
+    manager = S3FileManager()
+    manager.import_file_from_ssp_cloud(
+        "/".join([S3_USER_BUCKET, S3_PRETRAINED_MODEL_NAME]),
+        "/".join([".", PRETRAINED_MODEL_PATH]),
+    )
+
+
+@app.on_event("startup")
+async def startup_event():
+    await initialize_s3_file_manager()
+
 
 @app.get("/", response_class=HTMLResponse)
 def serve():
@@ -120,7 +134,7 @@ def serve():
         </head>
         <body>
             <h1>Parking places detection model</h1>
-            <form action="/fetch-and-display-image" method="post">
+            <form action="/proxy/8000/fetch-and-display-image" method="post">
                 <input type="text" name="username" placeholder="Enter your username">
                 <input type="text" name="image_url" placeholder="Enter Image URL here">
                 <button type="submit">Show Prediction</button>
@@ -153,8 +167,8 @@ async def fetch_and_display_image(image_url: str = Form(...), username: str = Fo
     clean_folder(save_folder)
 
     # Extract the image name from the URL
-    image_name = Path(username).name
-    save_path = save_folder / image_name
+    # image_name = Path(username).name
+    save_path = save_folder / f"{username}_image.png"
     try:
         # Fetch the image using requests
         response = requests.get(image_url)
@@ -167,7 +181,7 @@ async def fetch_and_display_image(image_url: str = Form(...), username: str = Fo
         pred = prediction(save_folder)
         saved_image = cv2.imread(str(save_path))
         saved_image = cv2.cvtColor(saved_image, cv2.COLOR_BGR2RGB)
-        save_name = f"{image_name}_prediction_plot.png"
+        save_name = f"{username}_prediction_plot.png"
         plot_path = save_folder / save_name
         print(plot_path)
         Visualizer.visualize(
@@ -190,17 +204,15 @@ async def fetch_and_display_image(image_url: str = Form(...), username: str = Fo
             <body>
                 <h1>Original Image and Prediction</h1>
                 <div style="display: flex; justify-content: space-around;">
-                    <div><img src="/static/{save_name}" alt="Prediction Visualization"></div>
+                    <div><img src="/proxy/8000/static/{save_name}" alt="Prediction Visualization"></div>
                 </div>
                 <!-- Button to go back to the main page -->
                 <div style="margin-top: 20px; text-align: center;">
-                    <button onclick="window.location.href='/';">Back to Main Page</button>
+                    <button onclick="window.location.href='/proxy/8000/';">Back to Main Page</button>
                 </div>
             </body>
         </html>
         """
-
-
         return HTMLResponse(html_content)
     except Exception as e:
         return {"error": f"An error occurred: {e}"}
