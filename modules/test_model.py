@@ -15,9 +15,10 @@ from torch.utils.data import DataLoader
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
-from constants import TEST_IMAGE_DIR, TEST_MASK_DIR, PARAMS, PRETRAINED_MODEL_PATH
+from constants import TEST_IMAGE_DIR, TEST_MASK_DIR, PARAMS, PRETRAINED_MODEL_PATH, S3_USER_BUCKET, S3_PRETRAINED_MODEL_NAME
 from datasets import FreeParkingPlacesInferenceDataset
 from utils import Visualizer
+from s3_fs import S3FileManager
 
 
 def load_model(model_file_path):
@@ -86,6 +87,12 @@ def main():
     are predefined within the function. It demonstrates an end-to-end application of the model
     inference, from loading the model to visualizing the predicted free parking spaces.
     """
+    # Initialize the S3FileManager
+    manager = S3FileManager()
+    manager.import_file_from_ssp_cloud(
+        "/".join([S3_USER_BUCKET, S3_PRETRAINED_MODEL_NAME]),
+        "/".join([".", PRETRAINED_MODEL_PATH]),
+    )
     visualizer_worker = Visualizer()
     test_image_filenames = os.listdir(TEST_IMAGE_DIR)
 
