@@ -15,7 +15,7 @@ from tqdm import tqdm
 from joblib import Parallel, delayed
 from utils import DataReader, Visualizer, ImageSaver
 from constants import TRAINING_IMAGE_DIR, TRAINING_MASK_DIR, \
-                      VAL_IMAGE_DIR, VAL_MASK_DIR
+                      VAL_IMAGE_DIR, VAL_MASK_DIR, DATA_ROOT_DIR
 
 random.seed(42)
 
@@ -160,8 +160,8 @@ class DataAugmentationWorker:
         self.save_one_image_mask_couple(
             cv2.cvtColor(self.original_image, cv2.COLOR_RGB2BGR),
             self.original_mask,
-            self.image_path.replace("../data", self.augmented_data_root_path),
-            self.mask_path.replace("../data", self.augmented_data_root_path),
+            self.image_path.replace(DATA_ROOT_DIR, self.augmented_data_root_path),
+            self.mask_path.replace(DATA_ROOT_DIR, self.augmented_data_root_path),
         )
         for i, ((transformed_image, transformed_mask), transformation) in enumerate(
             zip(all_transformed_data, self.all_transformations)
@@ -179,10 +179,10 @@ class DataAugmentationWorker:
             ).lower()
 
             image_path = self.image_path.replace(
-                "../data", self.augmented_data_root_path
+                DATA_ROOT_DIR, self.augmented_data_root_path
             ).replace(".png", "_" + image_mask_name_suffix + ".png")
             mask_path = self.mask_path.replace(
-                "../data", self.augmented_data_root_path
+                DATA_ROOT_DIR, self.augmented_data_root_path
             ).replace("_mask.png", "_" + image_mask_name_suffix + "_mask.png")
 
             self.save_one_image_mask_couple(
@@ -231,16 +231,16 @@ if __name__ == '__main__':
         delayed(apply_data_augmentation)(
             os.path.join(TRAINING_IMAGE_DIR, image_name),
             os.path.join(TRAINING_MASK_DIR, image_name.replace(".png", "_mask.png")),
-            "../data",
+            DATA_ROOT_DIR,
         )
-        for image_name in tqdm(os.listdir("../data/images"))
+        for image_name in tqdm(os.listdir(TRAINING_IMAGE_DIR))
     )
 
     _ = Parallel(n_jobs=-1)(
         delayed(apply_data_augmentation)(
             os.path.join(VAL_IMAGE_DIR, image_name),
             os.path.join(VAL_MASK_DIR, image_name.replace(".png", "_mask.png")),
-            "../data",
+            DATA_ROOT_DIR,
         )
-        for image_name in tqdm(os.listdir("../data/images"))
+        for image_name in tqdm(os.listdir(VAL_IMAGE_DIR))
    )

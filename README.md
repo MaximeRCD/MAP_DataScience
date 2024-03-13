@@ -9,12 +9,15 @@
     - [Prochaines Étapes et Tests](#prochaines-%C3%A9tapes-et-tests)
     - [Instructions d'Exécution](#instructions-dex%C3%A9cution)
     - [Bibliographie](#bibliographie)
+- [Contribuer](#contribuer)
+    - [Cas Spécifique](#cas-sp%C3%A9cifique)
 - [Évaluation](#%C3%A9valuation)
     - [Modalités](#modalit%C3%A9s)
 - [Checklist des bonnes pratiques de développement](#checklist-des-bonnes-pratiques-de-d%C3%A9veloppement)
 - [Parcours MLOps](#parcours-mlops)
         - [> ### Objectif](#--objectif)
     - [Etapes :](#etapes-)
+- [Séparation code Data](#s%C3%A9paration-code-data)
 
 <!-- /TOC -->
 
@@ -39,6 +42,14 @@ Des suggestions d'amélioration incluent l'extension de la durée d'entrainement
 
 Pour l'exécution du projet, suivez les étapes préparatoires décrites dans les notebooks Jupyter fournis pour la création de masques, le redimensionnement des images et l'application de l'augmentation de données, suivies par la formation et le test du modèle comme détaillé dans le notebook `Train_Test.ipynb`.
 
+## Instructions d'utilisation de l'API
+
+Il est possible d'utiliser le modèle afin de réaliser des prédictions des places de parking. Pour cela, une API est mise à disposition dans le script `Main.py`. Pour utiliser l'API en local, il suffit dans le terminal de se placer dans le dossier contenant celle-ci et d'entrer la commande suivante : 
+```{r, engine='bash', count_lines}
+ uvicorn main:app --reload
+```
+Une fois l'API lancée il suffit d'entrer l'adresse qui s'affiche dans le terminal dans un navigateur web et la page d'accueil s'affichera. Afin de réaliser une prédiction, il suffit de coller une url dans la zone de texte et de cliquer sur le bouton 'Show Prediction'
+
 ## Bibliographie
 
 1. [Smith, J. (2020). "Efficient Image Segmentation using PyTorch - Part 1." Towards Data Science.](https://towardsdatascience.com/efficient-image-segmentation-using-pytorch-part-1-89e8297a0923)
@@ -49,6 +60,36 @@ Pour l'exécution du projet, suivez les étapes préparatoires décrites dans le
 6. [Albumentations. (Documentation). "PyTorch Semantic Segmentation."](https://albumentations.ai/docs/examples/pytorch_semantic_segmentation/)
 7. [TernausNet GitHub Repository.](https://github.com/ternaus/TernausNet/tree/master)
 8. [PyTorch Tutorials. "Data Loading and Processing Tutorial."](https://pytorch.org/tutorials/beginner/data_loading_tutorial.html)
+
+# Contribuer 
+
+## Cas Spécifique
+
+Sur les machines d'Onixia j'ai rencontré une erreur avec l'import de la librairie **opencv-python** qui ressemblait à cette erreur : 
+
+```code
+    import cv2
+  File "/opt/mamba/lib/python3.11/site-packages/cv2/__init__.py", line 181, in <module>
+    bootstrap()
+  File "/opt/mamba/lib/python3.11/site-packages/cv2/__init__.py", line 153, in bootstrap
+    native_module = importlib.import_module("cv2")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/mamba/lib/python3.11/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  ImportError: libGL.so.1: cannot open shared object file: No such file or directory
+```
+
+L'erreur que nous rencontrons, ImportError: libGL.so.1: cannot open shared object file: No such file or directory, se produit généralement lorsque les bibliothèques OpenGL requises ne sont pas installées sur notre système. Cette bibliothèque est nécessaire pour que OpenCV puisse rendre des images et des vidéos, car il s'appuie sur l'accélération matérielle graphique fournie par OpenGL. Pour y remédier : 
+
+```bash
+sudo apt-get update
+sudo apt-get install libgl1-mesa-glx
+```
+
+> **⚠️ Attention**
+>
+> Il faudra donc surement ajouter cette commande au Dockerfile afin d'installer la librairie supplémentaire.
 
 
 # Évaluation
@@ -108,3 +149,15 @@ Les bonnes pratiques de développement ci-dessous sont les **indispensables de c
 - [ ] **Déployer l'API sur le SSP Cloud** ;
 - [ ] **Industrialiser le déploiement en mode GitOps avec ArgoCD** ;
 - [ ] **Gérer le monitoring de l'application : _logs, dashboard_ de suivi des performances, etc.**
+
+
+# Séparation code Data 
+```bash
+mc mb s3/maximerichaudeau1/data
+mc cp --recursive ./data/ s3/maximerichaudeau1/data
+
+mc mb s3/maximerichaudeau1/json
+mc cp --recursive ./json/ s3/maximerichaudeau1/json
+
+mc cp ./cross_entropy_weighted10_batch64_32_16.pth  s3/maximerichaudeau1/cross_entropy_weighted10_batch64_32_16.pth
+```

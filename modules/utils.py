@@ -94,9 +94,9 @@ class Visualizer:
         """
         fontsize = 18
         fig, ax = (
-            plt.subplots(figsize=(8, 8))
+            plt.subplots(1,2, figsize=(10, 10))
             if original_image is None
-            else plt.subplots(2, 2, figsize=(8, 8))
+            else plt.subplots(2, 2, figsize=(10, 10))
         )
         if original_image is not None:
             fig.suptitle(title, fontsize=fontsize)
@@ -110,7 +110,9 @@ class Visualizer:
             ax[1, 1].set_title("Transformed mask", fontsize=fontsize)
         else:
             ax[0].imshow(image)
+            ax[0].set_title('Image')
             ax[1].imshow(mask)
+            ax[1].set_title('Mask')
         plt.tight_layout()
         plt.show()
 
@@ -154,7 +156,7 @@ class Visualizer:
         """
         cols = 3 if predicted_masks else 2
         rows = len(images_filenames)
-        _, ax = plt.subplots(rows, cols, figsize=(10, rows * 3))
+        _, ax = plt.subplots(rows, cols, figsize=(10, rows * 3), squeeze=False)
         for i, filename in enumerate(images_filenames):
             img = cv2.cvtColor(
                 cv2.imread(os.path.join(images_directory, filename)), cv2.COLOR_BGR2RGB
