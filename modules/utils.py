@@ -94,9 +94,9 @@ class Visualizer:
         """
         fontsize = 18
         fig, ax = (
-            plt.subplots(figsize=(8, 8))
+            plt.subplots(1,2, figsize=(10, 10))
             if original_image is None
-            else plt.subplots(2, 2, figsize=(8, 8))
+            else plt.subplots(2, 2, figsize=(10, 10))
         )
         if original_image is not None:
             fig.suptitle(title, fontsize=fontsize)
@@ -110,7 +110,9 @@ class Visualizer:
             ax[1, 1].set_title("Transformed mask", fontsize=fontsize)
         else:
             ax[0].imshow(image)
+            ax[0].set_title('Image')
             ax[1].imshow(mask)
+            ax[1].set_title('Mask')
         plt.tight_layout()
         plt.show()
 
