@@ -1,9 +1,8 @@
 FROM ubuntu:latest
 
-# WORKDIR ${HOME}/titanic
-# RUN mkdir /app
-# COPY . /app
-# WORKDIR /app
+RUN mkdir /app
+COPY . /app
+WORKDIR /app
 
 RUN apt-get -y update && \
     apt-get install -y python3-pip
