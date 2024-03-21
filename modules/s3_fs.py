@@ -33,12 +33,15 @@ Example:
 import s3fs
 from constants import (
     S3_DATA_BUCKET_NAME,
-    S3_ENDPOINT_URL,
     S3_JSON_BUCKET_NAME,
     S3_PRETRAINED_MODEL_NAME,
     S3_USER_BUCKET,
     PRETRAINED_MODEL_PATH,
     DATA_ROOT_DIR,
+    AWS_S3_ENDPOINT,
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    AWS_SESSION_TOKEN
 )
 
 
@@ -48,7 +51,7 @@ class S3FileManager:
     cloud storage to the local system using the S3 protocol.
     """
 
-    def __init__(self, endpoint_url=S3_ENDPOINT_URL):
+    def __init__(self):
         """
         Initializes the S3FileManager with an S3FileSystem object.
 
@@ -56,7 +59,10 @@ class S3FileManager:
             endpoint_url (str): The endpoint URL for the S3 connection.
         """
         # self.fs = s3fs.S3FileSystem(client_kwargs={"endpoint_url": endpoint_url})
-        self.fs = s3fs.S3FileSystem(client_kwargs={'endpoint_url': 'https://'+'minio.lab.sspcloud.fr'},key ='RFW6MDWHZ2Y386U75LS1', secret = '89i61z1+ik5g+JeEmZLPmFV3upK99J9NLW+V5olp', token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NLZXkiOiJSRlc2TURXSFoyWTM4NlU3NUxTMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sImF1ZCI6WyJtaW5pby1kYXRhbm9kZSIsIm9ueXhpYSIsImFjY291bnQiXSwiYXV0aF90aW1lIjoxNzEwNzkxOTM5LCJhenAiOiJvbnl4aWEiLCJlbWFpbCI6Im1heGltZS5yaWNoYXVkZWF1QGVuc2FlLmZyIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImV4cCI6MTcxMTYzMzU5MywiZmFtaWx5X25hbWUiOiJSaWNoYXVkZWF1IiwiZ2l2ZW5fbmFtZSI6Ik1heGltZSIsImdyb3VwcyI6WyJVU0VSX09OWVhJQSJdLCJpYXQiOjE3MTEwMjg3OTMsImlzcyI6Imh0dHBzOi8vYXV0aC5sYWIuc3NwY2xvdWQuZnIvYXV0aC9yZWFsbXMvc3NwY2xvdWQiLCJqdGkiOiJlNWFmNjJkNC05ZDFmLTQzYjItOWIzOS1lZTk0MmM0MjA2YzAiLCJuYW1lIjoiTWF4aW1lIFJpY2hhdWRlYXUiLCJwb2xpY3kiOiJzdHNvbmx5IiwicHJlZmVycmVkX3VzZXJuYW1lIjoibWF4aW1lcmljaGF1ZGVhdTEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtc3NwY2xvdWQiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGdyb3VwcyBlbWFpbCIsInNlc3Npb25fc3RhdGUiOiJiMGQyN2NiOS05NzVkLTQwYzctOWZkNy01ODc3MzBlZGM2ZWYiLCJzaWQiOiJiMGQyN2NiOS05NzVkLTQwYzctOWZkNy01ODc3MzBlZGM2ZWYiLCJzdWIiOiJiZTBjYjVkYi1iMTg2LTRjNWUtYmFhOS1hNzY2YmUxN2JlNDAiLCJ0eXAiOiJCZWFyZXIifQ.CfPpL-SXwoi9tOC5v_4gUb6Pq_1FJY_mN5JlxZGDkkLKGq2nK3T2CUCcDBHETNflVqG2naCc-f08eYgFPa2pBA')
+        self.fs = s3fs.S3FileSystem(client_kwargs={'endpoint_url': 'https://'+ AWS_S3_ENDPOINT},
+                                    key = AWS_ACCESS_KEY_ID, 
+                                    secret = AWS_SECRET_ACCESS_KEY, 
+                                    token = AWS_SESSION_TOKEN)
     
     def import_bucket_from_ssp_cloud(
         self, source_bucket_name, destination_folder, recursive=True

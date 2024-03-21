@@ -1,16 +1,15 @@
-FROM ubuntu:latest
+FROM python:3.10
 
 RUN mkdir /app
-COPY ./modules/ /app/modules/
 COPY ./requirements.txt /app
-COPY ./main.py /app
-WORKDIR /app
 
-RUN apt-get -y update && \
-    apt-get install -y python3-pip
+WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-ENV AWS_S3_ENDPOINT="minio.lab.sspcloud.fr"
+COPY ./modules/ /app/modules/
+COPY ./main.py /app
+COPY ./.env /app
+
 
 CMD ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]

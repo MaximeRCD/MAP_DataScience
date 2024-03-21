@@ -49,6 +49,7 @@ Note:
 
 import torch
 import os
+from dotenv import load_dotenv
 
 VISUALIZER_BATCH_SIZE = 4
 
@@ -85,8 +86,15 @@ MR_ANNOTATION_MASKS_PATH = "./json/mask_maxime.ndjson"
 YN_ANNOTATION_TEST_MASKS_PATH = "./json/mask_test.json"
 
 # Available automatically only from Onixia services
-S3_ENDPOINT_URL = "https://" + os.environ["AWS_S3_ENDPOINT"]
+
 S3_USER_BUCKET = "maximerichaudeau1"
 S3_DATA_BUCKET_NAME = "data"
 S3_JSON_BUCKET_NAME = "json"
 S3_PRETRAINED_MODEL_NAME = "cross_entropy_weighted10_batch64_32_16.pth"
+
+load_dotenv()
+
+AWS_S3_ENDPOINT = os.getenv('AWS_S3_ENDPOINT')
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_SESSION_TOKEN = os.getenv('AWS_SESSION_TOKEN')
