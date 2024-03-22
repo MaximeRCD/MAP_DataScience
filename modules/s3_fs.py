@@ -33,12 +33,15 @@ Example:
 import s3fs
 from constants import (
     S3_DATA_BUCKET_NAME,
-    S3_ENDPOINT_URL,
     S3_JSON_BUCKET_NAME,
     S3_PRETRAINED_MODEL_NAME,
     S3_USER_BUCKET,
     PRETRAINED_MODEL_PATH,
     DATA_ROOT_DIR,
+    AWS_S3_ENDPOINT,
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    AWS_SESSION_TOKEN
 )
 
 
@@ -48,15 +51,19 @@ class S3FileManager:
     cloud storage to the local system using the S3 protocol.
     """
 
-    def __init__(self, endpoint_url=S3_ENDPOINT_URL):
+    def __init__(self):
         """
         Initializes the S3FileManager with an S3FileSystem object.
 
         Args:
             endpoint_url (str): The endpoint URL for the S3 connection.
         """
-        self.fs = s3fs.S3FileSystem(client_kwargs={"endpoint_url": endpoint_url})
-
+        # self.fs = s3fs.S3FileSystem(client_kwargs={"endpoint_url": endpoint_url})
+        self.fs = s3fs.S3FileSystem(client_kwargs={'endpoint_url': 'https://'+ AWS_S3_ENDPOINT},
+                                    key = AWS_ACCESS_KEY_ID, 
+                                    secret = AWS_SECRET_ACCESS_KEY, 
+                                    token = AWS_SESSION_TOKEN)
+    
     def import_bucket_from_ssp_cloud(
         self, source_bucket_name, destination_folder, recursive=True
     ):
