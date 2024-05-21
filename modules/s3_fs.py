@@ -55,7 +55,7 @@ class S3FileManager:
         Args:
             endpoint_url (str): The endpoint URL for the S3 connection.
         """
-        self.fs = s3fs.S3FileSystem(client_kwargs={"endpoint_url": endpoint_url})
+        self.fs = s3fs.S3FileSystem(client_kwargs={"endpoint_url": endpoint_url}, anon=True)
 
     def import_bucket_from_ssp_cloud(
         self, source_bucket_name, destination_folder, recursive=True
